@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mərc Oyunu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f3f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none; /* Oyun ekranını əvvəlcə gizlədirik */
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s ease;
+        }
+
+        .container.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .start-screen {
+            text-align: center;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="start-screen">
+        <h1>Mərc Oyunu</h1>
+        <button onclick="startGame()">Oyun Başla</button>
+    </div>
+
+    <div class="container" id="gameContainer">
+        <h1>Mərc Oyunu</h1>
+        <p>1-dən 5-ə qədər bir rəqəm seçin və şansınızı yoxlayın!</p>
+        <input type="number" id="userGuess" min="1" max="5" placeholder="Rəqəm seçin">
+        <button onclick="playGame()">Mərc Et</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function startGame() {
+            const startScreen = document.querySelector('.start-screen');
+            const gameContainer = document.getElementById('gameContainer');
+            startScreen.style.display = 'none'; // Başlama ekranını gizlədirik
+            gameContainer.classList.add('active'); // Oyun ekranını göstəririk
+        }
+
+        function playGame() {
+            const userGuess = parseInt(document.getElementById("userGuess").value);
+            const randomNumber = generateDifferentNumber(userGuess); // Həmişə fərqli rəqəm olacaq
+            const resultElement = document.getElementById("result");
+
+            if (userGuess < 1 || userGuess > 5 || isNaN(userGuess)) {
+                resultElement.textContent = "Lütfən, 1-dən 5-ə qədər rəqəm daxil edin.";
+                resultElement.style.color = "red";
+                return;
+            }
+
+            resultElement.textContent = `Üzr istəyirik, düzgün rəqəm: ${randomNumber}.`;
+            resultElement.style.color = "red";
+        }
+
+        function generateDifferentNumber(userGuess) {
+            let randomNumber;
+            do {
+                randomNumber = Math.floor(Math.random() * 5) + 1;
+            } while (randomNumber === userGuess); // İstifadəçi seçiminə uyğun gəlməyən rəqəm generasiya et
+            return randomNumber;
+        }
+    </script>
+</body>
+</html>
